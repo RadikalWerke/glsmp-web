@@ -1,0 +1,261 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background: black;
+	overflow: hidden;
+	font-family: 'Press Start 2P', cursive;
+}
+
+.badSignal {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+/* === VHS STATIC CANVAS === */
+#tv {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+	pointer-events: none;
+	animation: showHide 3s infinite;
+	transform: translate3d(0, 0, 0);
+	backface-visibility: hidden;
+}
+
+@keyframes showHide {
+	1%   { opacity: 0; }
+	10%  { opacity: 1; }
+	19%  { opacity: 0; }
+	100% { opacity: 0; }
+}
+
+/* === VHS UI LAYER === */
+.vhs {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	background: #171DA8;
+	overflow: hidden;
+	animation: blue-me 5ms infinite;
+}
+
+.vhs::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	box-shadow: inset 0 0 3em rgba(0, 0, 0, 0.75);
+	z-index: 2;
+	pointer-events: none;
+}
+
+@keyframes blue-me {
+	28% { background: #171DA8; }
+	30% { background: rgba(23, 29, 168, 0.95); }
+	33% { background: #171DA8; }
+	34% { background: rgba(23, 29, 168, 0.9); }
+	35% { background: #171DA8; }
+}
+
+/* === PAUSE & CLOCK === */
+.vhs-message {
+	animation: track 5ms infinite;
+	position: relative;
+	margin: 4em;
+	z-index: 3;
+}
+
+.vhs-message h1 {
+	position: absolute;
+	font-size: 4vw;
+	filter: blur(3px);
+	color: #fff;
+	text-shadow: 1px 3px green, -2px -3px red;
+	margin: 0;
+	white-space: nowrap;
+	font-feature-settings: "kern" off;
+	letter-spacing: 0.1em;
+}
+
+.pause {
+	left: 5vw;
+	top: 0;
+}
+
+.clock {
+	right: 5vw;
+	top: 0;
+}
+
+/* Blinking colon in clock */
+.clock .colon {
+	display: inline-block;
+	animation: blink 1s steps(1, start) infinite;
+}
+
+@keyframes blink {
+	0%, 49% {
+		opacity: 1;
+	}
+	50%, 100% {
+		opacity: 0;
+	}
+}
+
+/* Glitchy effects */
+@keyframes blur {
+	0%, 100% { filter: blur(1px); opacity: 0.8; }
+	50% { filter: blur(1px); opacity: 1; }
+}
+
+@keyframes flick {
+	50% { left: 2px; }
+	51% { left: 0; }
+}
+
+@keyframes jump {
+	30% { top: 10px; }
+	31% { top: 0; }
+}
+
+@keyframes track {
+	40% {
+		opacity: 1;
+		top: 0;
+		left: 0;
+		transform: scale(1, 1) skew(0deg, 0);
+	}
+	41% {
+		opacity: 0.8;
+		left: -100px;
+		transform: scale(1, 1.2) skew(50deg, 0);
+	}
+	42% {
+		opacity: 0.8;
+		left: 100px;
+		transform: scale(1, 1.2) skew(-80deg, 0);
+	}
+	43% {
+		opacity: 1;
+		left: 0;
+		transform: scale(1, 1) skew(0deg, 0);
+	}
+}
+
+/* === PARAGRAPH === */
+.vhs-paragraph-wrapper {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 90%;
+	max-width: 800px;
+	text-align: center;
+	pointer-events: none;
+	z-index: 3;
+}
+
+.vhs-paragraph {
+	color: white;
+	font-size: 1vw;
+	line-height: 1.8;
+	filter: blur(0.5px);
+	text-shadow: 1px 2px #00ffcc, -1px -2px #ff0055;
+}
+
+/* === TICKER === */
+.ticker-wrapper {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	overflow: hidden;
+	z-index: 4; /* above lines but below canvas flicker */
+	height: 2.5em;
+	pointer-events: none;
+}
+
+.ticker {
+	display: inline-block;
+	white-space: nowrap;
+	padding-left: 100%;
+	animation: scroll-ticker 60s linear infinite;
+}
+
+.ticker span {
+	display: inline-block;
+	color: white;
+	font-size: 0.6vw;
+	text-shadow: 1px 1px #00ffcc, -1px -1px #ff0055;
+	filter: blur(0.4px);
+	letter-spacing: 0.05em;
+	line-height: 2.5em;
+}
+
+@keyframes scroll-ticker {
+	from {
+		transform: translateX(0%);
+	}
+	to {
+		transform: translateX(-100%);
+	}
+}
+
+/* === VHS COLOR LINES === */
+.screen-bottom {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+
+.line {
+	width: 100%;
+	height: 3px;
+	position: relative;
+	animation: appear 1s infinite, flick 1s infinite, big-jump 5ms infinite;
+}
+
+.line .white {
+	background: white;
+	position: relative;
+	height: 4px;
+}
+
+.line .red {
+	background: red;
+	position: relative;
+	height: 1px;
+}
+
+.line .green {
+	background: green;
+	position: relative;
+	height: 1px;
+}
+
+@keyframes appear {
+	0%   { filter: blur(5px); opacity: 0.85; }
+	50%  { filter: blur(3px); opacity: 0.85; }
+	100% { filter: blur(4px); opacity: 0.85; }
+}
+
+@keyframes big-jump {
+	0% { top: 0; }
+	10% { top: -100px; }
+	12% { top: 0; }
+	54% { top: 0; }
+	55% { top: -300px; }
+	56% { top: 0; }
+	86% { top: 0; }
+	87% { top: -600px; }
+	88% { top: 0; }
+}
